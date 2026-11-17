@@ -226,3 +226,39 @@ The original raw dataset is retained separately from the processed output.
 
 
 
+
+
+## Feature Engineering (NumPy and Pandas) - Task 2
+
+The cleaned traffic dataset was used to create additional features for machine learning analysis.
+
+### 1. Time Features
+The following time-related features were created:
+- `hour`: Hour of the day.
+- `day_of_week`: Day of the week.
+- `is_weekend`: Indicator for weekend observations.
+- `hour_sin` and `hour_cos`: Cyclical encoding of the hour to represent the repeating 24-hour cycle.
+
+### 2. Weather Features
+- Weather categorical variables were converted into numerical features using one-hot encoding.
+- An `is_adverse_weather` indicator was created to identify adverse weather conditions.
+
+### 3. Numerical Features
+Min-Max scaling was applied to:
+- `temp`: Temperature.
+- `rain_1h`: Rainfall in the previous hour.
+
+The scaled variables are stored as `temp_scaled` and `rain_1h_scaled`.
+
+### 4. Congestion Category
+A data-driven `congestion_category` target was created using traffic volume percentiles:
+- **Low:** Traffic volume at or below the 33rd percentile (2,157).
+- **Medium:** Traffic volume above the 33rd percentile and at or below the 67th percentile (4,585.62).
+- **High:** Traffic volume above the 67th percentile.
+
+### 5. Output
+The feature-engineered dataset is saved as:
+
+`data/processed/metro_traffic_features.csv`
+
+The final dataset contains 48,187 rows and 29 columns.
