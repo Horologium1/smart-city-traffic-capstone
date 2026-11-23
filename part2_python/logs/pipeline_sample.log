@@ -1,0 +1,220 @@
+2026-11-20 17:46:02,418 - INFO - __main__ - Traffic analytics project started.
+2026-11-20 17:46:02,419 - INFO - __main__ - Central logging configuration initialized.
+2026-11-21 14:40:56,661 - INFO - __main__ - Traffic analytics project started.
+2026-11-21 14:40:56,662 - INFO - __main__ - Central logging configuration initialized.
+2026-11-21 14:40:59,281 - INFO - numexpr.utils - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-11-21 14:40:59,281 - INFO - numexpr.utils - NumExpr defaulting to 16 threads.
+2026-11-21 14:41:00,458 - INFO - __main__ - Starting data cleaning pipeline.
+2026-11-21 14:41:00,525 - INFO - pipeline - Raw CSV successfully loaded: 48204 rows and 9 columns
+2026-11-21 14:41:00,526 - INFO - pipeline - Schema validation successful. All 9 expected columns are present.
+2026-11-21 14:41:00,526 - INFO - pipeline - Initial loading and schema validation completed successfully.
+2026-11-21 14:41:00,544 - WARNING - pipeline - 48143 rows modified in column 'holiday' due to removal of leading/trailing spaces.
+2026-11-21 14:41:00,576 - INFO - pipeline - Categorical standardisation completed.
+2026-11-21 14:41:00,600 - INFO - pipeline - All date_time values are valid.
+2026-11-21 14:41:00,600 - INFO - pipeline - Date/time validation completed. 48204 rows retained out of 48204.
+2026-11-21 14:41:00,631 - WARNING - pipeline - 17 duplicate rows removed from the dataset.
+2026-11-21 14:41:00,631 - INFO - pipeline - Duplicate removal completed. 48187 rows retained out of 48204.
+2026-11-21 14:41:00,633 - WARNING - pipeline - 10 rows modified because temperature was 0 Kelvin, which is physically impossible.
+2026-11-21 14:41:00,633 - INFO - pipeline - Temperature validation completed.
+2026-11-21 14:41:00,634 - WARNING - pipeline - 1 rows modified because rainfall exceeded 9000 mm, which is physically unrealistic.
+2026-11-21 14:41:00,634 - INFO - pipeline - Rainfall validation completed.
+2026-11-21 14:41:00,641 - WARNING - pipeline - 10 missing values in 'temp' imputed using monthly medians.
+2026-11-21 14:41:00,644 - WARNING - pipeline - 1 missing values in 'rain_1h' imputed using monthly medians.
+2026-11-21 14:41:00,645 - INFO - pipeline - Monthly median imputation completed.
+2026-11-21 14:41:00,647 - ERROR - pipeline - Unable to save cleaned dataset.
+2026-11-21 14:41:00,655 - ERROR - pipeline - Pipeline failed: [Errno 13] Permission denied: 'C:\\Users\\lyl19\\OneDrive\\Desktop\\smart-city-traffic-capstone\\part2_python\\data\\processed\\metro_traffic_cleaned.csv'
+2026-11-21 14:41:00,658 - ERROR - __main__ - Data cleaning pipeline failed.
+2026-11-21 14:43:56,824 - INFO - __main__ - Traffic analytics project started.
+2026-11-21 14:43:56,825 - INFO - __main__ - Central logging configuration initialized.
+2026-11-21 14:43:57,170 - INFO - numexpr.utils - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-11-21 14:43:57,171 - INFO - numexpr.utils - NumExpr defaulting to 16 threads.
+2026-11-21 14:43:57,340 - INFO - __main__ - Starting data cleaning pipeline.
+2026-11-21 14:43:57,401 - INFO - pipeline - Raw CSV successfully loaded: 48204 rows and 9 columns
+2026-11-21 14:43:57,402 - INFO - pipeline - Schema validation successful. All 9 expected columns are present.
+2026-11-21 14:43:57,402 - INFO - pipeline - Initial loading and schema validation completed successfully.
+2026-11-21 14:43:57,414 - WARNING - pipeline - 48143 rows modified in column 'holiday' due to removal of leading/trailing spaces.
+2026-11-21 14:43:57,440 - INFO - pipeline - Categorical standardisation completed.
+2026-11-21 14:43:57,458 - INFO - pipeline - All date_time values are valid.
+2026-11-21 14:43:57,458 - INFO - pipeline - Date/time validation completed. 48204 rows retained out of 48204.
+2026-11-21 14:43:57,483 - WARNING - pipeline - 17 duplicate rows removed from the dataset.
+2026-11-21 14:43:57,483 - INFO - pipeline - Duplicate removal completed. 48187 rows retained out of 48204.
+2026-11-21 14:43:57,485 - WARNING - pipeline - 10 rows modified because temperature was 0 Kelvin, which is physically impossible.
+2026-11-21 14:43:57,485 - INFO - pipeline - Temperature validation completed.
+2026-11-21 14:43:57,487 - WARNING - pipeline - 1 rows modified because rainfall exceeded 9000 mm, which is physically unrealistic.
+2026-11-21 14:43:57,487 - INFO - pipeline - Rainfall validation completed.
+2026-11-21 14:43:57,493 - WARNING - pipeline - 10 missing values in 'temp' imputed using monthly medians.
+2026-11-21 14:43:57,495 - WARNING - pipeline - 1 missing values in 'rain_1h' imputed using monthly medians.
+2026-11-21 14:43:57,496 - INFO - pipeline - Monthly median imputation completed.
+2026-11-21 14:43:57,618 - INFO - pipeline - Cleaned dataset successfully saved: 48187 rows and 9 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_cleaned.csv
+2026-11-21 14:43:57,631 - INFO - pipeline - Final data quality validation results:
+2026-11-21 14:43:57,631 - INFO - pipeline - Remaining missing temperature values: 0
+2026-11-21 14:43:57,632 - INFO - pipeline - Remaining missing rainfall values: 0
+2026-11-21 14:43:57,632 - INFO - pipeline - Remaining duplicate rows: 0
+2026-11-21 14:43:57,632 - INFO - pipeline - Remaining zero Kelvin readings: 0
+2026-11-21 14:43:57,632 - INFO - pipeline - Remaining rainfall outliers: 0
+2026-11-21 14:43:57,632 - INFO - pipeline - Final data quality validation passed.
+2026-11-21 14:43:57,632 - INFO - pipeline - Pipeline execution completed successfully.
+2026-11-21 14:43:57,633 - INFO - __main__ - Data cleaning pipeline completed successfully.
+2026-11-21 14:43:57,633 - INFO - __main__ - Traffic analytics project completed.
+2026-11-21 14:49:34,133 - INFO - __main__ - Traffic analytics project started.
+2026-11-21 14:49:34,134 - INFO - __main__ - Central logging configuration initialized.
+2026-11-21 14:49:34,514 - INFO - numexpr.utils - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-11-21 14:49:34,516 - INFO - numexpr.utils - NumExpr defaulting to 16 threads.
+2026-11-21 14:49:34,691 - INFO - __main__ - Starting data cleaning pipeline.
+2026-11-21 14:49:34,752 - INFO - pipeline - Raw CSV successfully loaded: 48204 rows and 9 columns
+2026-11-21 14:49:34,753 - INFO - pipeline - Schema validation successful. All 9 expected columns are present.
+2026-11-21 14:49:34,754 - INFO - pipeline - Initial loading and schema validation completed successfully.
+2026-11-21 14:49:34,765 - WARNING - pipeline - 48143 rows modified in column 'holiday' due to removal of leading/trailing spaces.
+2026-11-21 14:49:34,791 - INFO - pipeline - Categorical standardisation completed.
+2026-11-21 14:49:34,811 - INFO - pipeline - All date_time values are valid.
+2026-11-21 14:49:34,812 - INFO - pipeline - Date/time validation completed. 48204 rows retained out of 48204.
+2026-11-21 14:49:34,840 - WARNING - pipeline - 17 duplicate rows removed from the dataset.
+2026-11-21 14:49:34,840 - INFO - pipeline - Duplicate removal completed. 48187 rows retained out of 48204.
+2026-11-21 14:49:34,842 - WARNING - pipeline - 10 rows modified because temperature was 0 Kelvin, which is physically impossible.
+2026-11-21 14:49:34,842 - INFO - pipeline - Temperature validation completed.
+2026-11-21 14:49:34,843 - WARNING - pipeline - 1 rows modified because rainfall exceeded 9000 mm, which is physically unrealistic.
+2026-11-21 14:49:34,843 - INFO - pipeline - Rainfall validation completed.
+2026-11-21 14:49:34,849 - WARNING - pipeline - 10 missing values in 'temp' imputed using monthly medians.
+2026-11-21 14:49:34,851 - WARNING - pipeline - 1 missing values in 'rain_1h' imputed using monthly medians.
+2026-11-21 14:49:34,852 - INFO - pipeline - Monthly median imputation completed.
+2026-11-21 14:49:34,971 - INFO - pipeline - Cleaned dataset successfully saved: 48187 rows and 9 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_cleaned.csv
+2026-11-21 14:49:34,983 - INFO - pipeline - Final data quality validation results:
+2026-11-21 14:49:34,983 - INFO - pipeline - Remaining missing temperature values: 0
+2026-11-21 14:49:34,984 - INFO - pipeline - Remaining missing rainfall values: 0
+2026-11-21 14:49:34,984 - INFO - pipeline - Remaining duplicate rows: 0
+2026-11-21 14:49:34,985 - INFO - pipeline - Remaining zero Kelvin readings: 0
+2026-11-21 14:49:34,985 - INFO - pipeline - Remaining rainfall outliers: 0
+2026-11-21 14:49:34,985 - INFO - pipeline - Final data quality validation passed.
+2026-11-21 14:49:34,985 - INFO - pipeline - Pipeline execution completed successfully.
+2026-11-21 14:49:34,986 - INFO - __main__ - Data cleaning pipeline completed successfully.
+2026-11-21 14:49:34,989 - INFO - __main__ - Starting feature engineering process.
+2026-11-21 14:49:34,990 - INFO - feature_engineering - Feature engineering process started.
+2026-11-21 14:49:35,065 - INFO - feature_engineering - Cleaned dataset loaded successfully: 48187 rows and 9 columns.
+2026-11-21 14:49:35,065 - INFO - feature_engineering - Dataset shape before feature engineering: 48187 rows and 9 columns.
+2026-11-21 14:49:35,071 - INFO - feature_engineering - Time features created: hour, day_of_week, is_weekend, hour_sin and hour_cos.
+2026-11-21 14:49:35,078 - INFO - feature_engineering - Weather features created: 11 one-hot encoded columns and is_adverse_weather indicator.
+2026-11-21 14:49:35,079 - INFO - feature_engineering - Min-Max scaling completed for 'temp'.
+2026-11-21 14:49:35,080 - INFO - feature_engineering - Min-Max scaling completed for 'rain_1h'.
+2026-11-21 14:49:35,080 - INFO - feature_engineering - Numerical feature scaling completed.
+2026-11-21 14:49:35,090 - INFO - feature_engineering - Congestion categories created using 33rd and 67th percentile thresholds.
+2026-11-21 14:49:35,093 - INFO - feature_engineering - Congestion category distribution: {'Medium': 16381, 'Low': 15904, 'High': 15902}
+2026-11-21 14:49:35,093 - INFO - feature_engineering - Dataset shape after feature engineering: 48187 rows and 29 columns.
+2026-11-21 14:49:35,475 - INFO - feature_engineering - Feature-engineered dataset saved successfully: 48187 rows and 29 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_features.csv
+2026-11-21 14:49:35,475 - INFO - feature_engineering - All feature engineering steps completed successfully.
+2026-11-21 14:49:35,477 - INFO - __main__ - Feature engineering process completed successfully.
+2026-11-21 14:49:35,477 - INFO - __main__ - Traffic analytics project completed.
+2026-11-21 14:51:40,718 - INFO - __main__ - Traffic analytics project started.
+2026-11-21 14:51:40,721 - INFO - __main__ - Central logging configuration initialized.
+2026-11-21 14:51:41,072 - INFO - numexpr.utils - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-11-21 14:51:41,073 - INFO - numexpr.utils - NumExpr defaulting to 16 threads.
+2026-11-21 14:51:41,240 - INFO - __main__ - Starting data cleaning pipeline.
+2026-11-21 14:51:41,304 - INFO - pipeline - Raw CSV successfully loaded: 48204 rows and 9 columns
+2026-11-21 14:51:41,305 - INFO - pipeline - Schema validation successful. All 9 expected columns are present.
+2026-11-21 14:51:41,306 - INFO - pipeline - Initial loading and schema validation completed successfully.
+2026-11-21 14:51:41,319 - WARNING - pipeline - 48143 rows modified in column 'holiday' due to removal of leading/trailing spaces.
+2026-11-21 14:51:41,346 - INFO - pipeline - Categorical standardisation completed.
+2026-11-21 14:51:41,364 - INFO - pipeline - All date_time values are valid.
+2026-11-21 14:51:41,364 - INFO - pipeline - Date/time validation completed. 48204 rows retained out of 48204.
+2026-11-21 14:51:41,389 - WARNING - pipeline - 17 duplicate rows removed from the dataset.
+2026-11-21 14:51:41,390 - INFO - pipeline - Duplicate removal completed. 48187 rows retained out of 48204.
+2026-11-21 14:51:41,392 - WARNING - pipeline - 10 rows modified because temperature was 0 Kelvin, which is physically impossible.
+2026-11-21 14:51:41,393 - INFO - pipeline - Temperature validation completed.
+2026-11-21 14:51:41,394 - WARNING - pipeline - 1 rows modified because rainfall exceeded 9000 mm, which is physically unrealistic.
+2026-11-21 14:51:41,394 - INFO - pipeline - Rainfall validation completed.
+2026-11-21 14:51:41,399 - WARNING - pipeline - 10 missing values in 'temp' imputed using monthly medians.
+2026-11-21 14:51:41,401 - WARNING - pipeline - 1 missing values in 'rain_1h' imputed using monthly medians.
+2026-11-21 14:51:41,403 - INFO - pipeline - Monthly median imputation completed.
+2026-11-21 14:51:41,520 - INFO - pipeline - Cleaned dataset successfully saved: 48187 rows and 9 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_cleaned.csv
+2026-11-21 14:51:41,534 - INFO - pipeline - Final data quality validation results:
+2026-11-21 14:51:41,534 - INFO - pipeline - Remaining missing temperature values: 0
+2026-11-21 14:51:41,535 - INFO - pipeline - Remaining missing rainfall values: 0
+2026-11-21 14:51:41,535 - INFO - pipeline - Remaining duplicate rows: 0
+2026-11-21 14:51:41,535 - INFO - pipeline - Remaining zero Kelvin readings: 0
+2026-11-21 14:51:41,535 - INFO - pipeline - Remaining rainfall outliers: 0
+2026-11-21 14:51:41,535 - INFO - pipeline - Final data quality validation passed.
+2026-11-21 14:51:41,535 - INFO - pipeline - Pipeline execution completed successfully.
+2026-11-21 14:51:41,536 - INFO - __main__ - Data cleaning pipeline completed successfully.
+2026-11-21 14:51:41,537 - INFO - __main__ - Starting feature engineering process.
+2026-11-21 14:51:41,537 - INFO - feature_engineering - Feature engineering process started.
+2026-11-21 14:51:41,607 - INFO - feature_engineering - Cleaned dataset loaded successfully: 48187 rows and 9 columns.
+2026-11-21 14:51:41,608 - INFO - feature_engineering - Dataset shape before feature engineering: 48187 rows and 9 columns.
+2026-11-21 14:51:41,613 - INFO - feature_engineering - Time features created: hour, day_of_week, is_weekend, hour_sin and hour_cos.
+2026-11-21 14:51:41,620 - INFO - feature_engineering - Weather features created: 11 one-hot encoded columns and is_adverse_weather indicator.
+2026-11-21 14:51:41,622 - INFO - feature_engineering - Min-Max scaling completed for 'temp'.
+2026-11-21 14:51:41,623 - INFO - feature_engineering - Min-Max scaling completed for 'rain_1h'.
+2026-11-21 14:51:41,623 - INFO - feature_engineering - Numerical feature scaling completed.
+2026-11-21 14:51:41,633 - INFO - feature_engineering - Congestion categories created using 33rd and 67th percentile thresholds.
+2026-11-21 14:51:41,635 - INFO - feature_engineering - Congestion category distribution: {'Medium': 16381, 'Low': 15904, 'High': 15902}
+2026-11-21 14:51:41,635 - INFO - feature_engineering - Dataset shape after feature engineering: 48187 rows and 29 columns.
+2026-11-21 14:51:41,940 - INFO - feature_engineering - Feature-engineered dataset saved successfully: 48187 rows and 29 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_features.csv
+2026-11-21 14:51:41,941 - INFO - feature_engineering - All feature engineering steps completed successfully.
+2026-11-21 14:51:41,942 - INFO - __main__ - Feature engineering process completed successfully.
+2026-11-21 14:51:42,876 - INFO - __main__ - Starting visualisation process.
+2026-11-21 14:51:42,876 - INFO - visualisation - Visualisation process started.
+2026-11-21 14:51:43,002 - INFO - visualisation - Feature-engineered dataset loaded successfully: 48187 rows and 29 columns.
+2026-11-21 14:51:43,791 - INFO - visualisation - Figure saved successfully: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\figures\traffic_by_hour.png
+2026-11-21 14:51:43,874 - INFO - visualisation - Figure saved successfully: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\figures\weekday_vs_weekend.png
+2026-11-21 14:51:44,133 - INFO - visualisation - Figure saved successfully: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\figures\temperature_vs_traffic.png
+2026-11-21 14:51:44,133 - INFO - visualisation - All visualisations completed successfully.
+2026-11-21 14:51:44,138 - INFO - __main__ - Visualisation process completed successfully.
+2026-11-21 14:51:44,138 - INFO - __main__ - All project processes completed successfully.
+2026-11-21 14:51:44,138 - INFO - __main__ - Traffic analytics project completed.
+2026-11-21 14:58:19,154 - INFO - __main__ - Traffic analytics application started.
+2026-11-21 14:58:19,331 - INFO - __main__ - Processed traffic dataset loaded successfully.
+2026-11-21 14:58:19,332 - INFO - __main__ - Command invoked: peak
+2026-11-21 15:13:35,797 - INFO - __main__ - Traffic analytics project started.
+2026-11-21 15:13:35,798 - INFO - __main__ - Central logging configuration initialized.
+2026-11-21 15:13:36,134 - INFO - numexpr.utils - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2026-11-21 15:13:36,134 - INFO - numexpr.utils - NumExpr defaulting to 16 threads.
+2026-11-21 15:13:36,300 - INFO - __main__ - Starting data cleaning pipeline.
+2026-11-21 15:13:36,365 - INFO - pipeline - Raw CSV successfully loaded: 48204 rows and 9 columns
+2026-11-21 15:13:36,365 - INFO - pipeline - Schema validation successful. All 9 expected columns are present.
+2026-11-21 15:13:36,366 - INFO - pipeline - Initial loading and schema validation completed successfully.
+2026-11-21 15:13:36,379 - WARNING - pipeline - 48143 rows modified in column 'holiday' due to removal of leading/trailing spaces.
+2026-11-21 15:13:36,405 - INFO - pipeline - Categorical standardisation completed.
+2026-11-21 15:13:36,424 - INFO - pipeline - All date_time values are valid.
+2026-11-21 15:13:36,424 - INFO - pipeline - Date/time validation completed. 48204 rows retained out of 48204.
+2026-11-21 15:13:36,450 - WARNING - pipeline - 17 duplicate rows removed from the dataset.
+2026-11-21 15:13:36,450 - INFO - pipeline - Duplicate removal completed. 48187 rows retained out of 48204.
+2026-11-21 15:13:36,452 - WARNING - pipeline - 10 rows modified because temperature was 0 Kelvin, which is physically impossible.
+2026-11-21 15:13:36,452 - INFO - pipeline - Temperature validation completed.
+2026-11-21 15:13:36,453 - WARNING - pipeline - 1 rows modified because rainfall exceeded 9000 mm, which is physically unrealistic.
+2026-11-21 15:13:36,454 - INFO - pipeline - Rainfall validation completed.
+2026-11-21 15:13:36,458 - WARNING - pipeline - 10 missing values in 'temp' imputed using monthly medians.
+2026-11-21 15:13:36,460 - WARNING - pipeline - 1 missing values in 'rain_1h' imputed using monthly medians.
+2026-11-21 15:13:36,461 - INFO - pipeline - Monthly median imputation completed.
+2026-11-21 15:13:36,580 - INFO - pipeline - Cleaned dataset successfully saved: 48187 rows and 9 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_cleaned.csv
+2026-11-21 15:13:36,591 - INFO - pipeline - Final data quality validation results:
+2026-11-21 15:13:36,592 - INFO - pipeline - Remaining missing temperature values: 0
+2026-11-21 15:13:36,592 - INFO - pipeline - Remaining missing rainfall values: 0
+2026-11-21 15:13:36,593 - INFO - pipeline - Remaining duplicate rows: 0
+2026-11-21 15:13:36,593 - INFO - pipeline - Remaining zero Kelvin readings: 0
+2026-11-21 15:13:36,593 - INFO - pipeline - Remaining rainfall outliers: 0
+2026-11-21 15:13:36,593 - INFO - pipeline - Final data quality validation passed.
+2026-11-21 15:13:36,593 - INFO - pipeline - Pipeline execution completed successfully.
+2026-11-21 15:13:36,594 - INFO - __main__ - Data cleaning pipeline completed successfully.
+2026-11-21 15:13:36,595 - INFO - __main__ - Starting feature engineering process.
+2026-11-21 15:13:36,595 - INFO - feature_engineering - Feature engineering process started.
+2026-11-21 15:13:36,668 - INFO - feature_engineering - Cleaned dataset loaded successfully: 48187 rows and 9 columns.
+2026-11-21 15:13:36,669 - INFO - feature_engineering - Dataset shape before feature engineering: 48187 rows and 9 columns.
+2026-11-21 15:13:36,675 - INFO - feature_engineering - Time features created: hour, day_of_week, is_weekend, hour_sin and hour_cos.
+2026-11-21 15:13:36,681 - INFO - feature_engineering - Weather features created: 11 one-hot encoded columns and is_adverse_weather indicator.
+2026-11-21 15:13:36,683 - INFO - feature_engineering - Min-Max scaling completed for 'temp'.
+2026-11-21 15:13:36,684 - INFO - feature_engineering - Min-Max scaling completed for 'rain_1h'.
+2026-11-21 15:13:36,684 - INFO - feature_engineering - Numerical feature scaling completed.
+2026-11-21 15:13:36,693 - INFO - feature_engineering - Congestion categories created using 33rd and 67th percentile thresholds.
+2026-11-21 15:13:36,695 - INFO - feature_engineering - Congestion category distribution: {'Medium': 16381, 'Low': 15904, 'High': 15902}
+2026-11-21 15:13:36,695 - INFO - feature_engineering - Dataset shape after feature engineering: 48187 rows and 29 columns.
+2026-11-21 15:13:37,008 - INFO - feature_engineering - Feature-engineered dataset saved successfully: 48187 rows and 29 columns. File: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\data\processed\metro_traffic_features.csv
+2026-11-21 15:13:37,008 - INFO - feature_engineering - All feature engineering steps completed successfully.
+2026-11-21 15:13:37,009 - INFO - __main__ - Feature engineering process completed successfully.
+2026-11-21 15:13:37,322 - INFO - __main__ - Starting visualizations process.
+2026-11-21 15:13:37,322 - INFO - visualizations - Visualisation process started.
+2026-11-21 15:13:37,440 - INFO - visualizations - Feature-engineered dataset loaded successfully: 48187 rows and 29 columns.
+2026-11-21 15:13:37,826 - INFO - visualizations - Figure saved successfully: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\figures\traffic_by_hour.png
+2026-11-21 15:13:37,905 - INFO - visualizations - Figure saved successfully: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\figures\weekday_vs_weekend.png
+2026-11-21 15:13:38,164 - INFO - visualizations - Figure saved successfully: C:\Users\lyl19\OneDrive\Desktop\smart-city-traffic-capstone\part2_python\figures\temperature_vs_traffic.png
+2026-11-21 15:13:38,164 - INFO - visualizations - All visualisations completed successfully.
+2026-11-21 15:13:38,166 - INFO - __main__ - Visualizations process completed successfully.
+2026-11-21 15:13:38,166 - INFO - __main__ - All project processes completed successfully.
+2026-11-21 15:13:38,166 - INFO - __main__ - Traffic analytics project completed.
