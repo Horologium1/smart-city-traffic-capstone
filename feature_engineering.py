@@ -1,42 +1,17 @@
-
 import pandas as pd
 import numpy as np
 import logging
 from pathlib import Path
+import sys
 
 # Configure project paths
 BASE_DIR = Path(__file__).resolve().parent
 
 INPUT_FILE = BASE_DIR / "data" / "processed" / "metro_traffic_cleaned.csv"
-
 OUTPUT_FILE = BASE_DIR / "data" / "processed" / "metro_traffic_features.csv"
 
-# Configure logger
+# Configure module logger
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-# Log folder
-log_folder = BASE_DIR / "logs"
-log_folder.mkdir(parents=True, exist_ok=True)
-
-# Log format
-formatter = logging.Formatter(
-    "%(asctime)s - %(levelname)s - %(message)s"
-)
-
-# Log to file
-file_handler = logging.FileHandler(
-    log_folder / "feature_engineering.log",
-    encoding="utf-8"
-)
-file_handler.setFormatter(formatter)
-
-# Log to console
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
 
 
 # Load cleaned dataset
@@ -73,7 +48,6 @@ def load_cleaned_data():
         raise
 
 
-
 # Create time-based features
 def create_time_features(df):
 
@@ -99,7 +73,6 @@ def create_time_features(df):
     )
 
     return df
-
 
 
 # Create weather-based features
@@ -143,7 +116,6 @@ def create_weather_features(df):
     return df
 
 
-
 # Scale numerical features using Min-Max scaling
 def scale_numerical_features(df):
 
@@ -180,7 +152,6 @@ def scale_numerical_features(df):
     logger.info("Numerical feature scaling completed.")
 
     return df
-
 
 
 # Create data-driven congestion category
@@ -224,7 +195,6 @@ def create_congestion_category(df):
     return df
 
 
-
 # Save feature-engineered dataset
 def save_feature_engineered_data(df):
 
@@ -249,29 +219,46 @@ def save_feature_engineered_data(df):
         raise
 
 
+# Main feature engineering execution
+def main():
+
+    logger.info("Feature engineering process started.")
+
+    try:
+
+        df = load_cleaned_data()
+
+        df = create_time_features(df)
+
+        df = create_weather_features(df)
+
+        df = scale_numerical_features(df)
+
+        df = create_congestion_category(df)
+
+        # Log final dataset shape
+        logger.info(
+            "Dataset shape after feature engineering: %d rows and %d columns.",
+            df.shape[0],
+            df.shape[1]
+        )
+
+        # Save feature-engineered dataset
+        save_feature_engineered_data(df)
+
+        logger.info(
+            "All feature engineering steps completed successfully."
+        )
+
+        return 0
+
+    except Exception:
+        logger.error(
+            "Feature engineering process failed.",
+            exc_info=True
+        )
+        return 1
+
 
 if __name__ == "__main__":
-
-    df = load_cleaned_data()
-
-    df = create_time_features(df)
-
-    df = create_weather_features(df)
-
-    df = scale_numerical_features(df)
-
-    df = create_congestion_category(df)
-
-    # Log final dataset shape
-    logger.info(
-        "Dataset shape after feature engineering: %d rows and %d columns.",
-        df.shape[0],
-        df.shape[1]
-    )
-
-    # Save feature-engineered dataset
-    save_feature_engineered_data(df)
-
-    logger.info(
-        "All feature engineering steps completed successfully."
-    )
+    sys.exit(main())
