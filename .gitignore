@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.tmp
+part2_python/logs/*.log
+capstone_part2/
+part3_machine_learning/*
+!part3_machine_learning/README_part3.md
