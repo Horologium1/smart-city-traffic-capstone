@@ -3,6 +3,7 @@ __pycache__/
 .DS_Store
 *.tmp
 part2_python/logs/*.log
+!part2_python/logs/pipeline_sample.log
 capstone_part2/
 part3_machine_learning/*
 !part3_machine_learning/README_part3.md
