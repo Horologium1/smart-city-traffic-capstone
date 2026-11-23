@@ -1,0 +1,4 @@
+Python==3.13.11
+pandas
+numpy
+matplotlib
