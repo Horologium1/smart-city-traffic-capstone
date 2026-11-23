@@ -3,23 +3,25 @@ import pandas as pd
 import logging
 import argparse
 from datetime import datetime
-
-# Logging configuration
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+from pathlib import Path
+import sys
 
 logger = logging.getLogger(__name__)
 
-DATA_FILE = "data/processed/metro_traffic_features.csv"
+BASE_DIR = Path(__file__).resolve().parent
+DATA_FILE = BASE_DIR / "data" / "processed" / "metro_traffic_features.csv"
 
 
 def load_data():
-    df = pd.read_csv(DATA_FILE)
-    df["date_time"] = pd.to_datetime(df["date_time"])
-    logger.info("Processed traffic dataset loaded successfully.")
-    return df
+    try:
+        df = pd.read_csv(DATA_FILE)
+        df["date_time"] = pd.to_datetime(df["date_time"])
+        logger.info("Processed traffic dataset loaded successfully.")
+        return df
+
+    except Exception as e:
+        logger.error("Failed to load traffic dataset: %s", e, exc_info=True)
+        raise
 
 
 def query_date(df, date, hour):
@@ -29,8 +31,10 @@ def query_date(df, date, hour):
         if hour < 0 or hour > 23:
             raise ValueError("Hour must be between 0 and 23.")
 
-        logger.info("Command invoked: date | arguments: date=%s, hour=%s",
-                    date, hour)
+        logger.info(
+            "Command invoked: date | arguments: date=%s, hour=%s",
+            date, hour
+        )
 
         result = df[
             (df["date_time"].dt.strftime("%Y-%m-%d") == date) &
@@ -40,8 +44,14 @@ def query_date(df, date, hour):
         if result.empty:
             print("No traffic data found for the specified date and hour.")
         else:
-            print(result[["date_time", "traffic_volume",
-                          "weather_main", "weather_description"]].to_string(index=False))
+            print(
+                result[[
+                    "date_time",
+                    "traffic_volume",
+                    "weather_main",
+                    "weather_description"
+                ]].to_string(index=False)
+            )
 
     except ValueError as e:
         logger.error("Invalid date or hour input: %s", e)
@@ -72,7 +82,10 @@ def compare_weekday_weekend(df):
 
 
 def query_weather(df, weather):
-    logger.info("Command invoked: weather | arguments: weather=%s", weather)
+    logger.info(
+        "Command invoked: weather | arguments: weather=%s",
+        weather
+    )
 
     result = df[
         df["weather_main"].str.lower() == weather.lower()
@@ -87,11 +100,21 @@ def query_weather(df, weather):
 
 
 def main():
+
+    # Reuse centralized logging configuration
+    from main import configure_logging
+    configure_logging()
+
+    logger.info("Traffic analytics application started.")
+
     parser = argparse.ArgumentParser(
         description="Mini Traffic Analytics Application"
     )
 
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers = parser.add_subparsers(
+        dest="command",
+        required=True
+    )
 
     # Date query
     date_parser = subparsers.add_parser("date")
@@ -110,20 +133,27 @@ def main():
 
     args = parser.parse_args()
 
-    df = load_data()
+    try:
+        df = load_data()
 
-    if args.command == "date":
-        query_date(df, args.date, args.hour)
+        if args.command == "date":
+            query_date(df, args.date, args.hour)
 
-    elif args.command == "peak":
-        query_peak(df)
+        elif args.command == "peak":
+            query_peak(df)
 
-    elif args.command == "compare":
-        compare_weekday_weekend(df)
+        elif args.command == "compare":
+            compare_weekday_weekend(df)
 
-    elif args.command == "weather":
-        query_weather(df, args.condition)
+        elif args.command == "weather":
+            query_weather(df, args.condition)
+
+        return 0
+
+    except Exception as e:
+        logger.error("Traffic analytics application failed: %s", e)
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
