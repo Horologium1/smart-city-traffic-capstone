@@ -11,33 +11,8 @@ RAW_FILE = BASE_DIR / "data" / "raw" / "Metro_Interstate_Traffic_Volume.csv"
 # Define cleaned output file
 OUTPUT_FILE = BASE_DIR / "data" / "processed" / "metro_traffic_cleaned.csv"
 
-# Configure logger
+# Obtain module logger
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-# Create log folder
-log_folder = BASE_DIR / "logs"
-log_folder.mkdir(parents=True, exist_ok=True)
-
-# Log format
-formatter = logging.Formatter(
-    "%(asctime)s - %(levelname)s - %(message)s"
-)
-
-# Log to file
-file_handler = logging.FileHandler(
-    log_folder / "pipeline.log",
-    encoding="utf-8"
-)
-file_handler.setFormatter(formatter)
-
-# Log to console
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-
 
 # Expected dataset columns
 EXPECTED_COLUMNS = [
@@ -354,7 +329,6 @@ def final_validation(df):
         logger.warning("Some data quality issues remain.")
 
     return df
-
 
 
 # Main pipeline execution
