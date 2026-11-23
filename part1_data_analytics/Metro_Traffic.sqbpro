@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="traffic.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1270"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Metro_Traffic" custom_title="0" dock_id="2" table="4,13:mainMetro_Traffic"/><dock_state state="000000ff00000000fd0000000100000002000005bc0000038efc0100000002fb000000160064006f0063006b00420072006f007700730065003101000000000000043c0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000005bc0000013300ffffff000002580000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Metro_Traffic" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="101"/><column index="2" value="54"/><column index="3" value="51"/><column index="4" value="59"/><column index="5" value="64"/><column index="6" value="101"/><column index="7" value="257"/><column index="8" value="156"/><column index="9" value="89"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- 1.1 Verify that the data has been loaded correctly
+-- Check total records
+SELECT COUNT(*) AS total_records
+FROM Metro_Traffic;
+
+-- Show first five records
+SELECT *
+FROM Metro_Traffic
+LIMIT 5;
+
+
+-- 1.2 Comparison of the yearly traffic volume for 2012-2017
+-- Identify years with increases/decreases and calculated volume/% changes btw years
+WITH yearly_traffic AS (
+    SELECT
+        strftime('%Y', date_time) AS year,
+        SUM(traffic_volume) AS total_volume,
+		COUNT(*) AS total_records,
+		ROUND(AVG(traffic_volume), 2)
+            AS average_hourly_traffic,
+		COUNT(DISTINCT date(date_time)) AS Number_of_Days,
+		ROUND(
+            SUM(traffic_volume) * 1.0 /
+            COUNT(DISTINCT date(date_time)), 2
+        ) AS average_daily_traffic
+    FROM Metro_Traffic
+    WHERE strftime('%Y', date_time)
+          BETWEEN '2012' AND '2017'
+    GROUP BY year
+)
+
+SELECT
+    year,
+    total_volume,
+	total_records,
+	average_hourly_traffic,
+	Number_of_Days,
+	average_daily_traffic,
+
+    total_volume - LAG(total_volume)
+        OVER (ORDER BY year) AS volume_change,
+
+    ROUND(
+        100.0 * (
+            total_volume - LAG(total_volume)
+                OVER (ORDER BY year)
+        ) / NULLIF(
+            LAG(total_volume) OVER (ORDER BY year), 0
+        ), 2
+    ) AS percentage_change
+
+FROM yearly_traffic
+ORDER BY year;
+
+
+-- Observations:-
+-- 1. In measuring traffic growth, annual volume change and Year-on-Year percentage change provide broad insights on overall traffic trend and demand over the years.
+-- 2. As the dataset records hourly traffic observations and has incomplete daily records in certain years, the average hourly traffic may be a better indicator of changes in traffic intensity than average daily traffic which is only based upon those recorded days in the year.
+
+
+-- 1.3 Compare temperature patterns for 2015, 2016 and 2017 during New Year's Day &amp; Labor Day
+-- Note: Temp converted to celsius for easier interpretation. 
+-- Note: The dataset did not label all holiday records falling on the day, hence the scope of the analysis has been enhanced for a more meaningful comparison.
+WITH holiday_dates AS (
+    SELECT DISTINCT
+        date(date_time) AS holiday_date,
+        holiday
+    FROM metro_traffic
+    WHERE holiday IN ('New Years Day', 'Labor Day')
+    AND strftime('%Y', date_time)
+        BETWEEN '2015' AND '2017'
+),
+
+holiday_stats AS (
+    SELECT
+        h.holiday,
+        strftime('%Y', t.date_time) AS year,
+
+        COUNT(*) AS total_records,
+
+        ROUND(AVG(t.temp - 273.15), 2)
+            AS average_temperature,
+
+        ROUND(MIN(t.temp - 273.15), 2)
+            AS minimum_temperature,
+
+        ROUND(MAX(t.temp - 273.15), 2)
+            AS maximum_temperature,
+
+        ROUND(AVG(t.traffic_volume), 2)
+            AS average_hourly_traffic
+
+    FROM metro_traffic t
+
+    JOIN holiday_dates h
+      ON date(t.date_time) = h.holiday_date
+
+    GROUP BY h.holiday, year
+)
+
+SELECT
+    holiday,
+    year,
+    total_records,
+    average_temperature,
+    minimum_temperature,
+    maximum_temperature,
+    average_hourly_traffic,
+
+    ROUND(
+        average_temperature -
+        LAG(average_temperature)
+        OVER (
+            PARTITION BY holiday
+            ORDER BY year
+        ), 2
+    ) AS temperature_change,
+
+    ROUND(
+        average_hourly_traffic -
+        LAG(average_hourly_traffic)
+        OVER (
+            PARTITION BY holiday
+            ORDER BY year
+        ), 2
+    ) AS traffic_change
+
+FROM holiday_stats
+ORDER BY holiday, year;
+
+-- Observations on notable year-on-year changes and whether these changes appear relevant to traffic conditions:
+-- 1. For Labor Day, the results show a positive correlation between average temperature and average traffic change between 2015 and 2016, while an inverse correlation of the same between 2016 and 2017. 
+--    The results above show that a drop in temperature do not always correspond to a drop in traffic volume. This suggests there could be other factors at play ie. road conditions, holiday travel behavior that could also affect traffic volume.
+-- 2. For New Year's Day over 2016 and 2017, the results suggest that a rise in temperature coincide with an increase in traffic volume, which could likely be due to favourable driving conditions. However this is only an association that's yet to be established. Also there seems to be a data lmitation as there are no records of New Year's Day recorded for 2015. 
+
+
+</sql><sql name="SQL 2">-- 2.1 Traffic volume descriptive statistics
+-- Mean, range
+SELECT
+    ROUND(AVG(traffic_volume), 2) AS Mean,
+    MIN(traffic_volume) AS Minimum,
+	MAX(traffic_volume) AS Maximum,
+	MAX(traffic_volume) - MIN(traffic_volume)
+        AS Range
+FROM Metro_Traffic;
+
+-- Median
+SELECT
+    AVG(traffic_volume) AS Median
+FROM (
+    SELECT traffic_volume
+    FROM Metro_Traffic
+    ORDER BY traffic_volume
+    LIMIT 2 - (
+        SELECT COUNT(*) % 2
+        FROM Metro_Traffic
+    )
+    OFFSET (
+        SELECT (COUNT(*) - 1) / 2
+        FROM Metro_Traffic
+    )
+);
+
+-- Variance, std deviation
+SELECT
+    COUNT(*) AS Total_Records,
+    ROUND(AVG(traffic_volume), 2) AS Mean,
+    ROUND(
+        (
+            SUM(traffic_volume * traffic_volume)
+            -
+            (SUM(traffic_volume) * SUM(traffic_volume)
+            * 1.0 / COUNT(*))
+        ) / (COUNT(*) - 1),
+        2
+    ) AS Variance,
+
+    ROUND(
+        SQRT(
+            (
+                SUM(traffic_volume * traffic_volume)
+                -
+                (SUM(traffic_volume) * SUM(traffic_volume)
+                * 1.0 / COUNT(*))
+            ) / (COUNT(*) - 1)
+        ),
+        2
+    ) AS Standard_Deviation
+
+FROM Metro_Traffic;
+
+-- Descriptive statistics are typically used together in analysing and describing the extent of traffic volume at highways such as the westbound I-94 near Minneapolis–St Paul. 
+-- The mean of 3260 represents the average traffic volume per hour, while the median of 3380 identifies the central value of the traffic records (less affected by unusually high/low volume).
+-- Both the standard deviation and variance measure the variability of traffic volume ie. a higher standard deviation indicates that traffic volume fluctuates considerably around the average and could be a reflection of the difference between peak and off-peak periods.
+-- Last but not least, the range measures the difference between the maximum and minimum traffic volumes, providing an indication of the overall variation/spread in traffic activity.
+
+
+-- 2.2 Correlation analysis
+-- Using Pearson coefficient to establish relationship between temperature and traffic volume
+SELECT
+    ROUND(
+        (
+            COUNT(*) * SUM(temp * traffic_volume)
+            - SUM(temp) * SUM(traffic_volume)
+        )
+        /
+        (
+            SQRT(
+                COUNT(*) * SUM(temp * temp)
+                - SUM(temp) * SUM(temp)
+            )
+            *
+            SQRT(
+                COUNT(*) * SUM(traffic_volume * traffic_volume)
+                - SUM(traffic_volume) * SUM(traffic_volume)
+            )
+        ),
+        4
+    ) AS correlation_coefficient
+
+FROM Metro_Traffic;
+
+-- Observations:
+-- The Pearson correlation coefficient of 0.13 indicates a positive but very weak correlation/relationship between temperature and traffic volume.
+-- Correlation does not necessarily imply causation as there could be other contributory factors at play such as road, weather conditions, motorists travel patterns, time of day which may also influence traffic volume. A holistic view of all factors should be considered when forming an assessment of traffic patterns.</sql><sql name="SQL 3">-- 3.1 Basic probability
+-- congestion defined as traffic volume &gt; 5500 vehicles
+-- P(Congestion)
+SELECT
+    COUNT(*) AS total_records,
+
+    SUM(
+        CASE WHEN traffic_volume &gt; 5500
+        THEN 1 ELSE 0 END
+    ) AS congestion_records,
+
+    ROUND(
+        1.0 * SUM(
+            CASE WHEN traffic_volume &gt; 5500
+            THEN 1 ELSE 0 END
+        ) / COUNT(*), 4
+    ) AS probability_congestion,
+
+-- P(Clear Weather)
+    SUM(
+        CASE WHEN weather_main = 'Clear'
+        THEN 1 ELSE 0 END
+    ) AS clear_weather_records,
+
+    ROUND(
+        1.0 * SUM(
+            CASE WHEN weather_main = 'Clear'
+            THEN 1 ELSE 0 END
+        ) / COUNT(*), 4
+    ) AS probability_clear_weather,
+
+-- P(Congestion AND Clear Weather)
+    SUM(
+        CASE WHEN traffic_volume &gt; 5500
+        AND weather_main = 'Clear'
+        THEN 1 ELSE 0 END
+    ) AS congestion_clear_records,
+
+    ROUND(
+        1.0 * SUM(
+            CASE WHEN traffic_volume &gt; 5500
+            AND weather_main = 'Clear'
+            THEN 1 ELSE 0 END
+        ) / COUNT(*), 4
+    ) AS probability_congestion_and_clear
+
+FROM Metro_Traffic;
+
+
+-- 3.2 Conditional probability
+SELECT
+    SUM(
+        CASE WHEN traffic_volume &gt; 5500
+        THEN 1 ELSE 0 END
+    ) AS congestion_records,
+
+	-- # of congestion clear records
+    SUM(
+        CASE WHEN traffic_volume &gt; 5500
+        AND weather_main = 'Clear'
+        THEN 1 ELSE 0 END
+    ) AS congestion_clear_records,
+	
+-- P(Clear Weather given Congestion)
+    ROUND(
+        1.0 * SUM(
+            CASE
+                WHEN traffic_volume &gt; 5500
+                AND weather_main = 'Clear'
+                THEN 1 ELSE 0
+            END
+        )
+        /
+        NULLIF(
+            SUM(
+                CASE WHEN traffic_volume &gt; 5500
+                THEN 1 ELSE 0 END
+            ), 0
+        ), 4
+    ) AS clear_given_congestion,
+
+-- P(High Temperature given Congestion)
+-- high temp defined as temp &gt; 292K
+	
+	-- # of congestion high temp records
+    SUM(
+        CASE WHEN traffic_volume &gt; 5500
+        AND temp &gt; 292
+        THEN 1 ELSE 0 END
+	) AS congestion_high_temp_records,
+	
+	ROUND(
+        1.0 * SUM(
+            CASE
+                WHEN traffic_volume &gt; 5500
+                AND temp &gt; 292
+                THEN 1 ELSE 0
+            END
+        )
+        /
+        NULLIF(
+            SUM(
+                CASE WHEN traffic_volume &gt; 5500
+                THEN 1 ELSE 0 END
+            ), 0
+        ), 4
+    ) AS high_temp_given_congestion
+
+FROM Metro_Traffic;
+
+
+-- test for independence (between weather conditions and congestion)
+-- P(Congestion)
+SELECT
+
+    ROUND(
+        1.0 * SUM(
+            CASE WHEN traffic_volume &gt; 5500
+            THEN 1 ELSE 0 END
+        ) / COUNT(*), 4
+    ) AS probability_congestion,
+
+-- P(Clear Weather)
+    ROUND(
+        1.0 * SUM(
+            CASE WHEN weather_main = 'Clear'
+            THEN 1 ELSE 0 END
+        ) / COUNT(*), 4
+    ) AS probability_clear,
+
+-- P(Congestion AND Clear Weather)
+    ROUND(
+        1.0 * SUM(
+            CASE
+                WHEN traffic_volume &gt; 5500
+                AND weather_main = 'Clear'
+                THEN 1 ELSE 0
+            END
+        ) / COUNT(*), 4
+    ) AS joint_probability,
+
+-- P(Congestion) * P(Clear Weather)
+    ROUND(
+        (
+            1.0 * SUM(
+                CASE WHEN traffic_volume &gt; 5500
+                THEN 1 ELSE 0 END
+            ) / COUNT(*)
+        )
+        *
+        (
+            1.0 * SUM(
+                CASE WHEN weather_main = 'Clear'
+                THEN 1 ELSE 0 END
+            ) / COUNT(*)
+        ), 4
+    ) AS expected_probability_if_indie
+
+FROM metro_traffic;
+
+-- Weather conditions and congestion cannot be considered independent as they are not equal (0.0366 vs 0.0409) based on the above probability test.
+
+
+-- Odds ratio of congestion in clear versus cloudy weather
+
+	-- Congestion during clear weather
+SELECT    
+	SUM(
+        CASE
+            WHEN weather_main = 'Clear'
+            AND traffic_volume &gt; 5500
+            THEN 1 ELSE 0
+        END
+    ) AS clear_congestion,
+
+	-- No congestion during clear weather
+    SUM(
+        CASE
+            WHEN weather_main = 'Clear'
+            AND traffic_volume &lt;= 5500
+            THEN 1 ELSE 0
+        END
+    ) AS clear_no_congestion,
+
+	-- Congestion during cloudy weather
+    SUM(
+        CASE
+            WHEN weather_main = 'Clouds'
+            AND traffic_volume &gt; 5500
+            THEN 1 ELSE 0
+        END
+    ) AS cloudy_congestion,
+
+	-- No congestion during cloudy weather
+    SUM(
+        CASE
+            WHEN weather_main = 'Clouds'
+            AND traffic_volume &lt;= 5500
+            THEN 1 ELSE 0
+        END
+    ) AS cloudy_no_congestion,
+
+	-- Odds Ratio
+    ROUND(
+        1.0 *
+        SUM(
+            CASE
+                WHEN weather_main = 'Clear'
+                AND traffic_volume &gt; 5500
+                THEN 1 ELSE 0
+            END
+        )
+        *
+        SUM(
+            CASE
+                WHEN weather_main = 'Clouds'
+                AND traffic_volume &lt;= 5500
+                THEN 1 ELSE 0
+            END
+        )
+        /
+        NULLIF(
+            SUM(
+                CASE
+                    WHEN weather_main = 'Clear'
+                    AND traffic_volume &lt;= 5500
+                    THEN 1 ELSE 0
+                END
+            )
+            *
+            SUM(
+                CASE
+                    WHEN weather_main = 'Clouds'
+                    AND traffic_volume &gt; 5500
+                    THEN 1 ELSE 0
+                END
+            ), 0
+        ), 4
+    ) AS odds_ratio
+
+FROM Metro_Traffic
+
+WHERE weather_main IN ('Clear', 'Clouds');
+
+-- Both the conditional probabilities of clear weather given congestion and high temperature given congestion were calculated to determine how frequently congestion occurred under clear weather or high temperature conditions (greater than 292K) respectively.
+-- Based on the results of the independence test which compared the joint probability of congestion and clear weather against the product of their individual probabilities, it can be concluded that weather conditions and congestion cannot be considered independent as they are not equal (0.0366 vs 0.0409).
+-- The odds ratio of 0.7354 which is below 1 suggests lower congestion odds during clear and cloudy weather.
+-- While these results provide some insights into how weather conditions are associated with traffic conditions, however it should be concluded that weather alone is unlikely to be the only factor affecting traffic congestion.</sql><current_tab id="0"/></tab_sql></sqlb_project>
