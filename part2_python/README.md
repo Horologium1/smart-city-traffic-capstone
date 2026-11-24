@@ -29,7 +29,7 @@ part2_python/
 ├── main.py
 ├── pipeline.py
 ├── feature_engineering.py
-├── visualization.py
+├── visualizations.py
 ├── traffic_analytics.py
 ├── requirements.txt
 └── README.md
@@ -273,4 +273,8 @@ The implementation supports:
 - Logging across multiple modules.
 - Logging of command-line analytics execution.
 
-The logging implementation was tested through both the main project pipeline and the standalone traffic analytics CLI.
+The logging implementation was tested through both the main project pipeline and the standalone traffic analytics app.
+
+## Reports and Documentation
+
+- [Smart City Mobility Analytics Report](Smart%20City%20Mobility%20Analytics%20Report.pdf) – Report covering SQL-based traffic analysis, trends, probability analysis and key findings.
