@@ -195,3 +195,7 @@ The separate Random Forest deployment export script is present. Its generated `.
 - SHAP and LIME execution encountered environment-related limitations. These supplementary analyses were not treated as blockers for the core saved LSTM prediction artifacts.
 - The final audit was intentionally read-only and did not rerun models, create new MLflow runs or modify existing outputs.
 
+## Reports and Documentation
+
+- [Final Capstone Report](Final%20Capstone%20Report.pdf) – Consolidated report covering the project methodology, data analysis, machine learning results, deployment and key findings.
+- [Bias and Fairness Report](Bias%20and%20Fairness%20Report.pdf) – Discussion of dataset limitations, potential biases, fairness considerations and recommended mitigation strategies.
